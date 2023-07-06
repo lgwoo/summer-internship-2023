@@ -95,10 +95,12 @@ def putmoney():
         account_num = int(account_entry.get())
         cur.execute("SELECT * FROM TEST WHERE account = ?", (account_num,))
         row = cur.fetchone()
-
         if row:
             recipient_name = row[1]
             amount = int(amount_entry.get())
+            if amount<=0:
+                confirmation_label.config(text="0보다 큰 금액을 입력해 주세요")
+                return
             confirmation_label.config(text=f"{recipient_name}님에게 {amount}원을 보내시겠습니까?")
             def confirm():
                 cur.execute("UPDATE TEST SET balance = balance + ? WHERE account=?", (amount, account_num))
@@ -150,9 +152,10 @@ def withdraw():
                 result_label.config(text=f"{row[3]}원이 있습니다.")
                 if amount > current_balance:
                     confirmation_label.config(text="계좌의 잔액보다 더 큰 금액을 입력했습니다.")
+                elif amount<=0:
+                    confirmation_label.config(text="0보다 큰 금액을 입력해 주세요")
                 else:
-                    confirmation_label.config(text=f"{row[1]}님의 계좌에서{amount}원을 출금하시겠습니까?")
-
+                    confirmation_label.config(text=f"{row[1]}님의 계좌에서 {amount}원을 출금하시겠습니까?")
                     def confirm():
                         cur.execute("UPDATE TEST SET balance = balance - ? WHERE account = ?", (amount, account_num))
                         cur.execute("INSERT INTO HISTORY VALUES (?, ?, ?, ?, ?)", (row[0], datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "출금", amount, "none"))
@@ -179,13 +182,13 @@ def withdraw():
     password_label = tk.Label(withdrawtk, text="비밀번호를 입력해 주세요.")
     password_label.pack()
 
-    password_entry = tk.Entry(withdrawtk)
+    password_entry = tk.Entry(withdrawtk, show="*")
     password_entry.pack()
 
     amount_label = tk.Label(withdrawtk, text="얼마를 출금하시겠습니까?")
     amount_label.pack()
 
-    amount_entry = tk.Entry(withdrawtk)
+    amount_entry = tk.Entry(withdrawtk,)
     amount_entry.pack()
 
     submit_button = tk.Button(withdrawtk, text="출금", command=submit)
@@ -223,6 +226,9 @@ def transfer():
                 if amount > current_balance:
                     result_label.config(text=f"{row[1]}님 계좌에는 {current_balance}원이 있습니다.\n계좌의 잔액보다 더 큰 금액을 입력했습니다.")
                     return
+                elif amount <= 0:
+                    result_label.config(text="0보다 더 큰 금액을 입력해 주세요.")
+                    return
                 def confirm():
                     cur.execute("UPDATE TEST SET balance = balance - ? WHERE account = ?", (amount, account_num))
                     cur.execute("UPDATE TEST SET balance = balance + ? WHERE account = ?", (amount, target_row[0]))
@@ -249,7 +255,7 @@ def transfer():
     password_label = tk.Label(root, text="비밀번호를 입력해 주세요.")
     password_label.pack()
 
-    password_entry = tk.Entry(root)
+    password_entry = tk.Entry(root,show="*")
     password_entry.pack()
 
     target_label = tk.Label(root, text="어느 계좌로 송금하시겠습니까?")
@@ -300,7 +306,7 @@ def checkaccount():
     password_label = tk.Label(root, text="비밀번호를 입력해 주세요.")
     password_label.pack()
 
-    password_entry = tk.Entry(root)
+    password_entry = tk.Entry(root,show="*")
     password_entry.pack()
 
     submit_button = tk.Button(root, text="확인", command=submit)
@@ -349,7 +355,7 @@ def checkhistory():
     password_label = tk.Label(root, text="비밀번호를 입력해 주세요.")
     password_label.pack()
 
-    password_entry = tk.Entry(root)
+    password_entry = tk.Entry(root, show="*")
     password_entry.pack()
 
     submit_button = tk.Button(root, text="확인", command=submit)
