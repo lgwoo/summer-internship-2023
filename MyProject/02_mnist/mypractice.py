@@ -6,7 +6,7 @@ from mnist import load_mnist
 from PIL import Image
 
 print(os.getcwd())
-#os.chdir("./deepLearning/mypractice")
+os.chdir("./Myproject/02_mnist")  # 오류시 파일 위치 지정해주기
 print(os.getcwd())
 print(pickle.format_version)
 def sigmoid(x):
@@ -60,6 +60,8 @@ x,t = get_data()
 network = init_network()
 W1,W2,W3 = network['W1'],network['W2'],network['W3']
 print(x.shape)
+print(x[0].shape)
+print(W1.shape)
 accuracy_cnt = 0
 for i in range(len(x)):
     y = predict(network,x[i])

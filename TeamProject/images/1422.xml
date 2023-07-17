@@ -1,0 +1,26 @@
+<annotation>
+	<folder>new</folder>
+	<filename>1422.jpg</filename>
+	<path>C:\Users\user\Desktop\new\1422.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1920</width>
+		<height>1080</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>person</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1632</xmin>
+			<ymin>294</ymin>
+			<xmax>1745</xmax>
+			<ymax>433</ymax>
+		</bndbox>
+	</object>
+</annotation>
